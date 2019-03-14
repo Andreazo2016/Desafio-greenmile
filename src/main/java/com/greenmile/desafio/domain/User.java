@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -23,6 +25,9 @@ public class User {
     @NotEmpty(message = "Password can't be empty")
     @NotNull(message = "Password can't be null")
     private String password;
+
+    @OneToMany(mappedBy = "user", targetEntity = RegisterTime.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RegisterTime> registerTimes = new ArrayList<>();
 
 
     public User(){}
@@ -62,5 +67,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<RegisterTime> getRegisterTimes() {
+        return registerTimes;
+    }
+
+    public void setRegisterTimes(List<RegisterTime> registerTimes) {
+        this.registerTimes = registerTimes;
     }
 }
