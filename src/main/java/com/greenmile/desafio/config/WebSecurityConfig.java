@@ -40,11 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().authorizeRequests()
-                .antMatchers("/home").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
+        httpSecurity.csrf().disable();
+        httpSecurity.authorizeRequests()
+                .antMatchers( HttpMethod.GET,"**/users/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll();
+
+             httpSecurity.authorizeRequests() .and()
 
                 // filtra requisições de login
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
