@@ -1,6 +1,9 @@
 package com.greenmile.desafio.controller;
 
+import com.greenmile.desafio.domain.RegisterTime;
 import com.greenmile.desafio.domain.User;
+import com.greenmile.desafio.dto.RegisteTimeResponseDTO;
+import com.greenmile.desafio.dto.RegisterTimeDTO;
 import com.greenmile.desafio.dto.UserDTO;
 import com.greenmile.desafio.dto.UserResponseDTO;
 import com.greenmile.desafio.service.UserService;
@@ -14,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.Collections;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +49,23 @@ public class UserController {
                 .map( user -> UserResponseDTO.toUserResponseDTO(( user ) ) )
                 .collect( Collectors.toList() );
         return new ResponseEntity<>( userResponseDTOS, HttpStatus.OK );
+
+    }
+    @PostMapping("/users/registerTimes")
+    public ResponseEntity<RegisteTimeResponseDTO> saveRegister(Principal principal, @RequestBody RegisterTimeDTO registerTimeDTO ){
+
+        RegisterTime registerTime = userService.saveRegister( principal.getName(), registerTimeDTO.toRegisteTime() );
+        return new ResponseEntity<>(RegisteTimeResponseDTO.toRegisteTimeResponse( registerTime ), HttpStatus.CREATED );
+    }
+
+    @GetMapping("/users/{idUser}/registerTimes")
+    public ResponseEntity<List<RegisteTimeResponseDTO>> getAllRegister( @PathVariable("idUser") Long idUser, Pageable pageable ){
+        Page<RegisterTime> registerTimes = userService.getMyAllRegister( PageRequest.of( pageable.getPageNumber(), DEFAULT_QTD_ITENS_PER_PAGE ), idUser );
+        List< RegisteTimeResponseDTO > registerResponseDTOS = registerTimes.getContent()
+                .stream()
+                .map( registerTime -> RegisteTimeResponseDTO.toRegisteTimeResponse( registerTime ))
+                .collect( Collectors.toList() );
+        return new ResponseEntity<>( registerResponseDTOS , HttpStatus.OK );
 
     }
 }
