@@ -42,12 +42,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable();
         httpSecurity.authorizeRequests()
-                .antMatchers( HttpMethod.GET,"**/users/**").permitAll()
-                .antMatchers( HttpMethod.GET,"**/users/**/registerTimes/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll();
+                .antMatchers( HttpMethod.GET,"/api/users/**" ).permitAll()
+                .antMatchers( HttpMethod.GET,"/api/users/**/registerTimes/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/api/**")
+                .authenticated();
 
-             httpSecurity.authorizeRequests() .and()
-
+             httpSecurity.authorizeRequests()
+                     .and()
                 // filtra requisições de login
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
 

@@ -2,7 +2,6 @@ package com.greenmile.desafio.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.greenmile.desafio.domain.RegisterTime;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -20,12 +19,12 @@ public class RegisteTimeResponseDTO {
     private Date endTime;
 
 
-    public Date getInitTime() {
+    public Date getInitialTime() {
         return initialTime;
     }
 
-    public void setInitTime(Date initTime) {
-        this.initialTime = initTime;
+    public void setInitialTime(Date initialTime) {
+        this.initialTime = initialTime;
     }
 
     public Date getEndTime() {
