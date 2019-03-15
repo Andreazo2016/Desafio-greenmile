@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,8 @@ public class UserController {
     private UserService userService;
 
     private static final int DEFAULT_QTD_ITENS_PER_PAGE = 10;
+
+    public UserController(){}
     @Autowired
     public UserController( UserService userService ){
         this.userService = userService;
@@ -66,7 +69,7 @@ public class UserController {
 
     @ApiOperation(value = "Return a List of users", notes = "Pagination")
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers( Pageable pageable ){
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers( @PageableDefault(size = 5, value = 0) Pageable pageable ){
         Page<User> users = userService.getUsers(PageRequest.of( pageable.getPageNumber(), DEFAULT_QTD_ITENS_PER_PAGE ) );
         List< UserResponseDTO> userResponseDTOS = users.getContent()
                 .stream()
@@ -86,6 +89,16 @@ public class UserController {
     }
 
     @ApiOperation(value = "Return registerTime of user by idUser")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                    value = "Results page you want to retrieve (0..N)"),
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                    value = "Number of records per page."),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                    value = "Sorting criteria in the format: property(,asc|desc). " +
+                            "Default sort order is ascending. " +
+                            "Multiple sort criteria are supported.")
+    })
     @GetMapping("/users/{idUser}/registerTimes")
     public ResponseEntity<List<RegisteTimeResponseDTO>> getAllRegister( @PathVariable("idUser") Long idUser, Pageable pageable ){
         Page<RegisterTime> registerTimes = userService.getMyAllRegister( PageRequest.of( pageable.getPageNumber(), DEFAULT_QTD_ITENS_PER_PAGE ), idUser );
