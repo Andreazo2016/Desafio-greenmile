@@ -23,18 +23,6 @@ public class RegisteTimeTest {
     @Autowired
     private MockMvc mvc;
 
-
-    private static String token;
-
-    @Before
-    public void shouldRetornTokenAcess(){
-        token = Util.createToken( "usernameTest" );
-        Assert.assertNotNull(token);
-    }
-
-
-
-
     @Test
     public void getRegisterTimeOfUserDontExist() throws Exception {
 

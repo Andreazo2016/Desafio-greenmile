@@ -29,7 +29,6 @@ public class UserController {
 
     private UserService userService;
 
-    private static final int DEFAULT_QTD_ITENS_PER_PAGE = 10;
     @Autowired
     public UserController( UserService userService ){
         this.userService = userService;
@@ -43,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers(  @PageableDefault( value = 10)Pageable pageable ){
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers(  @PageableDefault( value = 10 ) Pageable pageable ){
         Page<User> users = userService.getUsers( pageable );
         List< UserResponseDTO> userResponseDTOS = users.getContent()
                 .stream()
@@ -60,8 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{idUser}/registerTimes")
-    public ResponseEntity<List<RegisteTimeResponseDTO>> getAllRegister( @PathVariable("idUser") Long idUser, Pageable pageable ){
-        Page<RegisterTime> registerTimes = userService.getMyAllRegister( PageRequest.of( pageable.getPageNumber(), DEFAULT_QTD_ITENS_PER_PAGE ), idUser );
+    public ResponseEntity<List<RegisteTimeResponseDTO>> getAllRegister( @PathVariable("idUser") Long idUser, @PageableDefault( value = 10 ) Pageable pageable ){
+        Page<RegisterTime> registerTimes = userService.getMyAllRegister( pageable, idUser );
         List< RegisteTimeResponseDTO > registerResponseDTOS = registerTimes.getContent()
                 .stream()
                 .map( registerTime -> RegisteTimeResponseDTO.toRegisteTimeResponse( registerTime ))

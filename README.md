@@ -4,9 +4,9 @@ Repositório destinado a resolução do desafio proposto pela GreenMile.
 
 ### Permição de Usuários da API
 
-- `*/api/users`  - Via método POST nescessita está logado
-- `*/api/users` - Via método GET sem restrição
-- `*/login` - Sem restrição
+- `*/api/users`  - via método POST nescessita está logado
+- `*/api/users` - via método GET sem restrição
+- `*/login` - sem restrição
 - `*/api/users/registerTimes` - nescessita está logado
 - `*/api/users/{idUser}/registerTimes` - sem restrição
 
