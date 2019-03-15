@@ -5,6 +5,7 @@ import com.greenmile.desafio.Util.Util;
 import com.greenmile.desafio.controller.UserController;
 import com.greenmile.desafio.domain.User;
 import com.greenmile.desafio.jwt.service.TokenAuthenticationService;
+import com.greenmile.desafio.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,9 @@ public class UserTest {
 
     private static String token;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Before
     public void shouldRetornTokenAcess(){
         token = Util.createToken( "usernameTest" );
@@ -47,7 +51,7 @@ public class UserTest {
 
     @Test
     public void registeUser() throws Exception {
-
+        userRepository.deleteAll();
         mvc.perform( MockMvcRequestBuilders
                 .post("/api/users")
                 .header("Origin","*")
