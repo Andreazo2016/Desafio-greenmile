@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers( Pageable pageable ){
-        Page<User> users = userService.getUsers(PageRequest.of( pageable.getPageNumber(), DEFAULT_QTD_ITENS_PER_PAGE ) );
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers(  @PageableDefault( value = 10)Pageable pageable ){
+        Page<User> users = userService.getUsers( pageable );
         List< UserResponseDTO> userResponseDTOS = users.getContent()
                 .stream()
                 .map( user -> UserResponseDTO.toUserResponseDTO(( user ) ) )
