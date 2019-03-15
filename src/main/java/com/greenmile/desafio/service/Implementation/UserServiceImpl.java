@@ -7,6 +7,7 @@ import com.greenmile.desafio.repository.UserRepository;
 import com.greenmile.desafio.service.RegisterTimeService;
 import com.greenmile.desafio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,7 +41,9 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush( user );
     }
 
+
     @Override
+    @Cacheable("Users")
     public Page<User> getUsers( Pageable pageable ){
         return userRepository.findAll( pageable );
     }

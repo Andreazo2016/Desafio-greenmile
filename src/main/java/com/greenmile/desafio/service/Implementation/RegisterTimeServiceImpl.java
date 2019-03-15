@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Cacheable;
+
 @Service
 public class RegisterTimeServiceImpl implements RegisterTimeService {
 
@@ -19,6 +21,7 @@ public class RegisterTimeServiceImpl implements RegisterTimeService {
     }
 
     @Override
+
     public Page<RegisterTime> getAllRegisterByUser( Pageable pageable, Long id) {
         return registerTimeRepository.findByUserId( pageable, id );
     }
